@@ -11,6 +11,7 @@ import NewUpload from "./views/NewUpload.vue";
 import Categories from "./views/Categories.vue";
 import Pages from "./views/Pages.vue";
 import EditPage from "./views/EditPage.vue"
+import Test from "./views/TestTipTap.vue"
 import firebase from 'firebase'
 
 Vue.use(Router);
@@ -97,7 +98,15 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
-    }
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: Test,
+      meta: {
+        requiresAuth: true
+      }
+    },
   ]
 });
 

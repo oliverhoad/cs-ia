@@ -1,6 +1,7 @@
 <template>
   <v-data-table
-    calculate-widths="true"
+    v-if="this.currentUserYear == 'Teacher'"
+    :calculate-widths="calcWidths"
     :search="search"
     :headers="headers"
     :items="wordbank"
@@ -13,10 +14,15 @@
         <v-toolbar-title>Wordbank</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
 
-        <v-text-field v-model="search" label="Search" single-line hide-details></v-text-field>
+        <v-text-field
+          v-model="search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
         <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{on}">
-            <v-btn color="primary" dark v-on="on">New Word</v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn dark v-on="on">New Word</v-btn>
           </template>
 
           <v-card>
@@ -27,8 +33,14 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-text-field v-model="editedWord.word" label="Word"></v-text-field>
-                  <v-text-field v-model="editedWord.definition" label="Definition"></v-text-field>
+                  <v-text-field
+                    v-model="editedWord.word"
+                    label="Word"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="editedWord.definition"
+                    label="Definition"
+                  ></v-text-field>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -42,18 +54,51 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.action="{item}">
+    <template
+      v-if="this.currentUserYear == 'Teacher'"
+      v-slot:item.action="{ item }"
+    >
       <v-icon block @click="editWord(item)">mdi-pencil</v-icon>
       <v-icon block @click="deleteWord(item)">mdi-delete</v-icon>
+    </template>
+  </v-data-table>
+
+  <v-data-table
+    v-else-if="this.currentUserYear != 'Teacher'"
+    :calculate-widths="calcWidths"
+    :search="search"
+    :headers="headers"
+    :items="wordbank"
+    :sort-by="['word']"
+    :sort-desc="[false]"
+    class="mytable elevation-1"
+  >
+    <template v-slot:top>
+      <v-toolbar flat color="white">
+        <v-toolbar-title>Wordbank</v-toolbar-title>
+        <v-divider class="mx-4" inset vertical></v-divider>
+
+        <v-text-field
+          v-model="search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-toolbar>
     </template>
   </v-data-table>
 </template>
 
 <script>
 import { db } from "@/main.js";
+import firebase from "firebase";
 export default {
   data() {
     return {
+      user: null,
+      currentUserYear: null,
+      teacher: null,
+      calcWidths: true,
       docID: "",
       dialog: false,
       search: "",
@@ -69,7 +114,7 @@ export default {
           sortable: true,
           value: "definition"
         },
-        { text: "Actions", value: "action", sortable: false }
+        { text: "Teacher Actions", value: "action", sortable: false }
       ],
       editedIndex: -1,
       editedWord: {
@@ -94,6 +139,27 @@ export default {
   },
   created() {
     this.initialize();
+    firebase.auth().onAuthStateChanged(user => {
+      console.log(user);
+      if (user) {
+        this.user = user;
+        db.collection("users")
+          .where("id", "==", this.user.uid)
+          .get()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              this.currentUserYear = doc.data().year;
+              // console.log(this.currentUserYear);
+              if (this.currentUserYear == "Teacher") {
+                this.teacher = true;
+              }
+            });
+          });
+      } else {
+        this.user = null;
+      }
+    });
+
     // db.collection("wordbank")
     //   .get()
     //   .then(snapshot => {
@@ -193,8 +259,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.mytable tbody tr:not(:last-child) {
-  border: none;
-}
-</style>
+<style lang="scss" scoped></style>

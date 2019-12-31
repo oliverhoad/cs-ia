@@ -1,9 +1,10 @@
 <template>
   <div class="editor">
     <editor-menu-bar
+      v-if="editable"
       class="pa-2 d-flex justify-center grey lighten-2"
       :editor="editor"
-      v-slot="{ commands, isActive }"
+      v-slot="{ commands, isActive, getMarkAttrs, menu }"
     >
       <div class="menubar">
         <v-btn
@@ -96,7 +97,12 @@
           <v-icon>mdi-format-list-numbered</v-icon>
         </v-btn>
 
-        <v-btn text icon class="menubar__button" @click="showImagePrompt(commands.image)">
+        <v-btn
+          text
+          icon
+          class="menubar__button"
+          @click="showImagePrompt(commands.image)"
+        >
           <v-icon>mdi-image</v-icon>
         </v-btn>
 
@@ -124,31 +130,101 @@
         </v-btn>
 
         <span v-if="isActive.table()">
-          <v-btn text icon class="menubar__button" @click="commands.deleteTable">
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            @click="commands.deleteTable"
+          >
             <v-icon>mdi-table-large-remove</v-icon>
           </v-btn>
-          <v-btn text icon class="menubar__button" @click="commands.addColumnBefore">
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            @click="commands.addColumnBefore"
+          >
             <v-icon>mdi-table-column-plus-before</v-icon>
           </v-btn>
-          <v-btn text icon class="menubar__button" @click="commands.addColumnAfter">
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            @click="commands.addColumnAfter"
+          >
             <v-icon>mdi-table-column-plus-after</v-icon>
           </v-btn>
-          <v-btn text icon class="menubar__button" @click="commands.deleteColumn">
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            @click="commands.deleteColumn"
+          >
             <v-icon>mdi-table-column-remove</v-icon>
           </v-btn>
-          <v-btn text icon class="menubar__button" @click="commands.addRowBefore">
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            @click="commands.addRowBefore"
+          >
             <v-icon>mdi-table-row-plus-before</v-icon>
           </v-btn>
-          <v-btn text icon class="menubar__button" @click="commands.addRowAfter">
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            @click="commands.addRowAfter"
+          >
             <v-icon>mdi-table-row-plus-after</v-icon>
           </v-btn>
           <v-btn text icon class="menubar__button" @click="commands.deleteRow">
             <v-icon>mdi-table-row-remove</v-icon>
           </v-btn>
-          <v-btn text icon class="menubar__button" @click="commands.toggleCellMerge">
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            @click="commands.toggleCellMerge"
+          >
             <v-icon>mdi-table-merge-cells</v-icon>
           </v-btn>
         </span>
+
+        <form
+          class="menubar__form"
+          v-if="linkMenuIsActive"
+          @submit.prevent="setLinkUrl(commands.link, linkUrl)"
+        >
+          <input
+            class="menubar__input"
+            type="text"
+            v-model="linkUrl"
+            placeholder="https://"
+            ref="linkInput"
+            @keydown.esc="hideLinkMenu"
+          />
+          <button
+            class="menubar__button"
+            @click="setLinkUrl(commands.link, null)"
+            type="button"
+          >
+            <icon name="link" />
+          </button>
+        </form>
+
+        <template v-else>
+          <button
+            class="menubar__button"
+            @click="showLinkMenu(getMarkAttrs('link'))"
+            :class="{ 'is-active': isActive.link() }"
+          >
+            <v-icon>{{
+              isActive.link() ? "mdi-link-plus" : "mdi-link"
+            }}</v-icon>
+            <icon name="link" />
+          </button>
+        </template>
       </div>
     </editor-menu-bar>
 
@@ -156,6 +232,7 @@
       <editor-content :editor="editor" />
     </v-container>
     <v-overflow-btn
+      v-if="editable"
       class="my-2"
       :items="categories"
       label="Overflow Btn"
@@ -169,8 +246,14 @@
       v-on:click="submit()"
       :disabled="this.overflowSelected == null"
       block
-    >Submit</v-btn>
-    <v-btn v-else-if="this.new == false && this.editable == true" v-on:click="update()" block>Update</v-btn>
+      >Submit</v-btn
+    >
+    <v-btn
+      v-else-if="this.new == false && this.editable == true"
+      v-on:click="update()"
+      block
+      >Update</v-btn
+    >
     <!-- <v-btn v-on:click="setContent()" block>SET CONTENT</v-btn>
     <pre><code v-html="json"></code></pre>-->
   </div>
@@ -216,6 +299,7 @@ export default {
   data() {
     return {
       keepInBounds: true,
+
       editor: new Editor({
         editable: this.editable,
         extensions: [
@@ -267,10 +351,27 @@ export default {
       // new: this.new,
       pageData: null,
       selected: "",
-      pageId: null
+      pageId: null,
+      linkUrl: null,
+      linkMenuIsActive: false
     };
   },
   methods: {
+    showLinkMenu(attrs) {
+      this.linkUrl = attrs.href;
+      this.linkMenuIsActive = true;
+      this.$nextTick(() => {
+        this.$refs.linkInput.focus();
+      });
+    },
+    hideLinkMenu() {
+      this.linkUrl = null;
+      this.linkMenuIsActive = false;
+    },
+    setLinkUrl(command, url) {
+      command({ href: url });
+      this.hideLinkMenu();
+    },
     setContent() {
       this.editor.setContent(
         {
@@ -378,11 +479,11 @@ export default {
 };
 
 // const editor = new EditorJS({});
-</script> 
+</script>
 
 <style lang="scss">
 editor-menu-bar {
-  position: fixed;
+  position: fixed !important;
   top: 0px;
   border: red solid 2px;
 }
@@ -398,7 +499,7 @@ editor-menu-bar {
 .editor table,
 td,
 th {
-  border: 1px solid black;
+  border: 2px solid #d3d3d3;
 }
 
 .editor *.is-empty:nth-child(1)::before,

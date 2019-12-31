@@ -1,11 +1,13 @@
 <template>
   <div class="home">
     <div class="d-flex flex-column justify-center align-center mt-10">
-      <h1 class="display-4 indigo--text">Welcome Back</h1>
+      <h1 class="display-4 light-blue--text">Welcome Back</h1>
       <p class="mt-10 display-1 font-regular">The Word of the Day is...</p>
       <p
-        class="display-2 text-capitalize indigo darken-1 indigo--text text--lighten-2 pa-3"
-      >{{wordOfTheDay}}</p>
+        class="display-2 text-capitalize light-blue darken-1 light-blue--text text--lighten-4 pa-3"
+      >
+        {{ wordOfTheDay }}
+      </p>
 
       <v-card
         width="80%"
@@ -49,5 +51,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

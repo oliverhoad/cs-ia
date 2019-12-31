@@ -1,19 +1,31 @@
 <template>
   <div class="nav">
-    <v-app-bar clipped-right app color="indigo" dark>
+    <v-app-bar clipped-right app color="light-blue darken-1" dark>
       <v-toolbar-title color="white">
         <router-link to="/" class="title-link">
-          <span class="yellow--text">Ms Hoad</span> English Language and Literature
+          <span class="yellow--text">Ms Hoad</span> English Language and
+          Literature
         </router-link>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
-      <v-btn v-if="!user" :to="{name: 'signup'}" text>Signup</v-btn>
-      <v-btn v-if="!user" :to="{name: 'login'}" text>Login</v-btn>
-      <span v-if="user">{{user.email}}</span>
+      <v-btn v-if="!user" :to="{ name: 'signup' }" text>Signup</v-btn>
+      <v-btn v-if="!user" :to="{ name: 'login' }" text>Login</v-btn>
+      <span v-if="user">{{ user.email }}</span>
       <v-btn v-if="user" @click="logout" text>Logout</v-btn>
-      <v-app-bar-nav-icon v-if="user" @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        v-if="user"
+        @click="drawer = !drawer"
+      ></v-app-bar-nav-icon>
     </v-app-bar>
-    <v-navigation-drawer v-if="user" width="500" clipped color="indigo" right app v-model="drawer">
+    <v-navigation-drawer
+      v-if="user"
+      width="500"
+      clipped
+      color="light-blue darken-2"
+      right
+      app
+      v-model="drawer"
+    >
       <v-container>
         <div v-if="this.currentUserYear == 'Teacher'">
           <v-row>
@@ -31,7 +43,7 @@
                     :key="index"
                     :to="dropdown.link"
                   >
-                    <v-list-item-title>{{dropdown.name}}</v-list-item-title>
+                    <v-list-item-title>{{ dropdown.name }}</v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -56,11 +68,12 @@
         <v-row>
           <v-col v-for="(yearGroup, index) in yearGroups" :key="index">
             <v-btn
-              :to="{name: 'pages', params: {yearGroup: yearGroup} }"
+              :to="{ name: 'pages', params: { yearGroup: yearGroup } }"
               block
               text
               dark
-            >{{yearGroup}}</v-btn>
+              >{{ yearGroup }}</v-btn
+            >
           </v-col>
         </v-row>
       </v-container>

@@ -58,12 +58,12 @@
               <v-icon small>mdi-bookmark</v-icon>
             </v-btn>
           </v-col>
-          <v-col>
+          <!-- <v-col>
             <v-btn block to="games">
               Word Games
               <v-icon small>mdi-gamepad-square</v-icon>
             </v-btn>
-          </v-col>
+          </v-col> -->
         </v-row>
         <v-row>
           <v-col v-for="(yearGroup, index) in yearGroups" :key="index">

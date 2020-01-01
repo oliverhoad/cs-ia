@@ -1,25 +1,44 @@
 <template>
   <div class="signup">
-    <h1>Signup page</h1>
-    <v-form @submit.prevent="signup" ref="form" v-model="valid" :lazy-validation="lazy">
-      <v-text-field label="Name" v-model="name" required :rules="nameRules"></v-text-field>
-      <v-text-field label="Email" v-model="email" required :rules="emailRules"></v-text-field>
-      <v-text-field
-        type="password"
-        label="Password"
-        v-model="password"
-        required
-        :rules="passwordRules"
-      ></v-text-field>
-      <v-select
-        v-model="selectedYear"
-        :items="yearGroups"
-        :rules="[v => !!v || 'Item is required']"
-        label="Year Group"
-        required
-      ></v-select>
-      <v-btn :disabled="!valid" color="success" @click="validate">Signup</v-btn>
-    </v-form>
+    <v-container class="mt-12">
+      <h1 class="display-2 text-center mb-5">Signup page</h1>
+      <v-form
+        @submit.prevent="signup"
+        ref="form"
+        v-model="valid"
+        :lazy-validation="lazy"
+      >
+        <v-text-field
+          label="Name"
+          v-model="name"
+          required
+          :rules="nameRules"
+        ></v-text-field>
+        <v-text-field
+          label="Email"
+          v-model="email"
+          required
+          :rules="emailRules"
+        ></v-text-field>
+        <v-text-field
+          type="password"
+          label="Password"
+          v-model="password"
+          required
+          :rules="passwordRules"
+        ></v-text-field>
+        <v-select
+          v-model="selectedYear"
+          :items="yearGroups"
+          :rules="[v => !!v || 'Item is required']"
+          label="Year Group"
+          required
+        ></v-select>
+        <v-btn block :disabled="!valid" color="success" @click="validate"
+          >Signup</v-btn
+        >
+      </v-form>
+    </v-container>
   </div>
 </template>
 
@@ -42,7 +61,7 @@ export default {
       email: null,
       emailRules: [
         v => !!v || "E-mail is required",
-        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+        v => /.+@[sis.gl]+\..+/.test(v) || "E-mail must be valid"
       ],
       password: null,
       passwordRules: [v => !!v || "Password is required"],

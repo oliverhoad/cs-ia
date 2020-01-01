@@ -22,7 +22,15 @@
         ></v-text-field>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn dark v-on="on">New Word</v-btn>
+            <v-btn
+              color="light-blue accent-4"
+              large
+              class="ml-6"
+              elevation="4"
+              dark
+              v-on="on"
+              >New Word</v-btn
+            >
           </template>
 
           <v-card>

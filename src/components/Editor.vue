@@ -2,7 +2,7 @@
   <div class="editor">
     <editor-menu-bar
       v-if="editable"
-      class="pa-2 d-flex justify-center grey lighten-2"
+      class=""
       :editor="editor"
       v-slot="{ commands, isActive, getMarkAttrs, menu }"
     >
@@ -482,14 +482,25 @@ export default {
 </script>
 
 <style lang="scss">
-editor-menu-bar {
-  position: fixed !important;
-  top: 0px;
-  border: red solid 2px;
+.menubar {
+  position: sticky;
+  top: 60px;
+  background: #00bfa5;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  border-bottom: #004d40 solid 2px;
+  // align-items: flex-end;
+  // align-content: flex-end;
 }
 
 .menubar button {
-  margin: 0 10px;
+  margin: 10px 10px;
+  // margin-top: 70px;
+}
+
+.editor .ProseMirror{
+  padding: 10px;
 }
 
 .editor table {

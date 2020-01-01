@@ -1,18 +1,32 @@
 <template>
   <div class="login">
-    <h1>Login</h1>
-    <v-form @submit.prevent="login" ref="form" v-model="valid" :lazy-validation="lazy">
-      <v-text-field label="Email" v-model="email" required :rules="emailRules"></v-text-field>
-      <v-text-field
-        type="password"
-        label="Password"
-        v-model="password"
-        required
-        :rules="passwordRules"
-      ></v-text-field>
+    <v-container class="mt-12">
+      <h1 class="display-2 text-center mb-5">Login</h1>
+      <v-form
+        @submit.prevent="login"
+        ref="form"
+        v-model="valid"
+        :lazy-validation="lazy"
+      >
+        <v-text-field
+          label="Email"
+          v-model="email"
+          required
+          :rules="emailRules"
+        ></v-text-field>
+        <v-text-field
+          type="password"
+          label="Password"
+          v-model="password"
+          required
+          :rules="passwordRules"
+        ></v-text-field>
 
-      <v-btn :disabled="!valid" color="success" @click="validate">Login</v-btn>
-    </v-form>
+        <v-btn block :disabled="!valid" color="success" @click="validate"
+          >Login</v-btn
+        >
+      </v-form>
+    </v-container>
   </div>
 </template>
 
@@ -26,7 +40,7 @@ export default {
       email: null,
       emailRules: [
         v => !!v || "E-mail is required",
-        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+        v => /.+@[sis.gl]+\..+/.test(v) || "E-mail must be valid"
       ],
       password: null,
       passwordRules: [v => !!v || "Password is required"]

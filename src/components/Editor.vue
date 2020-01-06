@@ -2,7 +2,7 @@
   <div class="editor">
     <editor-menu-bar
       v-if="editable"
-      class=""
+      class
       :editor="editor"
       v-slot="{ commands, isActive, getMarkAttrs, menu }"
     >
@@ -97,12 +97,7 @@
           <v-icon>mdi-format-list-numbered</v-icon>
         </v-btn>
 
-        <v-btn
-          text
-          icon
-          class="menubar__button"
-          @click="showImagePrompt(commands.image)"
-        >
+        <v-btn text icon class="menubar__button" @click="showImagePrompt(commands.image)">
           <v-icon>mdi-image</v-icon>
         </v-btn>
 
@@ -130,63 +125,28 @@
         </v-btn>
 
         <span v-if="isActive.table()">
-          <v-btn
-            text
-            icon
-            class="menubar__button"
-            @click="commands.deleteTable"
-          >
+          <v-btn text icon class="menubar__button" @click="commands.deleteTable">
             <v-icon>mdi-table-large-remove</v-icon>
           </v-btn>
-          <v-btn
-            text
-            icon
-            class="menubar__button"
-            @click="commands.addColumnBefore"
-          >
+          <v-btn text icon class="menubar__button" @click="commands.addColumnBefore">
             <v-icon>mdi-table-column-plus-before</v-icon>
           </v-btn>
-          <v-btn
-            text
-            icon
-            class="menubar__button"
-            @click="commands.addColumnAfter"
-          >
+          <v-btn text icon class="menubar__button" @click="commands.addColumnAfter">
             <v-icon>mdi-table-column-plus-after</v-icon>
           </v-btn>
-          <v-btn
-            text
-            icon
-            class="menubar__button"
-            @click="commands.deleteColumn"
-          >
+          <v-btn text icon class="menubar__button" @click="commands.deleteColumn">
             <v-icon>mdi-table-column-remove</v-icon>
           </v-btn>
-          <v-btn
-            text
-            icon
-            class="menubar__button"
-            @click="commands.addRowBefore"
-          >
+          <v-btn text icon class="menubar__button" @click="commands.addRowBefore">
             <v-icon>mdi-table-row-plus-before</v-icon>
           </v-btn>
-          <v-btn
-            text
-            icon
-            class="menubar__button"
-            @click="commands.addRowAfter"
-          >
+          <v-btn text icon class="menubar__button" @click="commands.addRowAfter">
             <v-icon>mdi-table-row-plus-after</v-icon>
           </v-btn>
           <v-btn text icon class="menubar__button" @click="commands.deleteRow">
             <v-icon>mdi-table-row-remove</v-icon>
           </v-btn>
-          <v-btn
-            text
-            icon
-            class="menubar__button"
-            @click="commands.toggleCellMerge"
-          >
+          <v-btn text icon class="menubar__button" @click="commands.toggleCellMerge">
             <v-icon>mdi-table-merge-cells</v-icon>
           </v-btn>
         </span>
@@ -204,11 +164,7 @@
             ref="linkInput"
             @keydown.esc="hideLinkMenu"
           />
-          <button
-            class="menubar__button"
-            @click="setLinkUrl(commands.link, null)"
-            type="button"
-          >
+          <button class="menubar__button" @click="setLinkUrl(commands.link, null)" type="button">
             <icon name="link" />
           </button>
         </form>
@@ -219,9 +175,11 @@
             @click="showLinkMenu(getMarkAttrs('link'))"
             :class="{ 'is-active': isActive.link() }"
           >
-            <v-icon>{{
+            <v-icon>
+              {{
               isActive.link() ? "mdi-link-plus" : "mdi-link"
-            }}</v-icon>
+              }}
+            </v-icon>
             <icon name="link" />
           </button>
         </template>
@@ -230,30 +188,35 @@
 
     <v-container>
       <editor-content :editor="editor" />
-    </v-container>
-    <v-overflow-btn
-      v-if="editable"
-      class="my-2"
-      :items="categories"
-      label="Overflow Btn"
-      target="#dropdown-example"
-      v-model="overflowSelected"
-    ></v-overflow-btn>
-    <p>{{ selected }}</p>
+      <v-overflow-btn
+        background-color="white"
+        v-if="editable"
+        class="my-2"
+        :items="categories"
+        label="Choose Category/Unit"
+        target="#dropdown-example"
+        v-model="overflowSelected"
+      ></v-overflow-btn>
+      <p>{{ selected }}</p>
 
-    <v-btn
-      v-if="this.new == true"
-      v-on:click="submit()"
-      :disabled="this.overflowSelected == null"
-      block
-      >Submit</v-btn
-    >
-    <v-btn
-      v-else-if="this.new == false && this.editable == true"
-      v-on:click="update()"
-      block
-      >Update</v-btn
-    >
+      <v-btn
+        large
+        color="light-blue accent-4 white--text"
+        elevation="4"
+        v-if="this.new == true"
+        v-on:click="submit()"
+        :disabled="this.overflowSelected == null"
+        block
+      >Submit</v-btn> <!-- Shows this button if it a new resource -->
+      <v-btn
+        large
+        color="light-blue accent-4 white--text"
+        elevation="4"
+        v-else-if="this.new == false && this.editable == true"
+        v-on:click="update()"
+        block
+      >Update</v-btn> <!-- Shows this button if the teacher is editing the resource -->
+    </v-container>
     <!-- <v-btn v-on:click="setContent()" block>SET CONTENT</v-btn>
     <pre><code v-html="json"></code></pre>-->
   </div>
@@ -372,7 +335,7 @@ export default {
       command({ href: url });
       this.hideLinkMenu();
     },
-    setContent() {
+    setContent() { // executed later on
       this.editor.setContent(
         {
           type: this.pageData.type,
@@ -390,10 +353,10 @@ export default {
         remove: /[$*_+~.()'"!\-:@]/g,
         lower: true
       });
-      this.json.slug = this.slug;
-      this.json.category = this.overflowSelected;
-      db.collection("pages").add(this.json);
-      this.$router.push({ name: "home" });
+      this.json.slug = this.slug; // makes pages easier to query
+      this.json.category = this.overflowSelected; // makes filtering of content work with categories
+      db.collection("pages").add(this.json); // creates resource and adds it to the database
+      this.$router.push({ name: "home" }); // redirects to home
     },
     update() {
       console.log(this.json);
@@ -407,7 +370,7 @@ export default {
       this.json.category = this.overflowSelected;
       db.collection("pages")
         .doc(this.pageId)
-        .set(this.json);
+        .set(this.json); // does similar task to submit function however sets data instead of creates
     },
     showImagePrompt(command) {
       const src = prompt("Enter the url of your image here");
@@ -468,9 +431,9 @@ export default {
     // this.setContent();
     setTimeout(() => {
       console.log(this.pageData);
-      this.setContent();
+      this.setContent(); // executing function after 1 second to wait for eveything to load first
       this.editor.setOptions({
-        editable: this.editable
+        editable: this.editable // setting whether content in editor is editable ot not
       });
     }, 1000);
     this.json = this.pageData;
@@ -499,8 +462,11 @@ export default {
   // margin-top: 70px;
 }
 
-.editor .ProseMirror{
+.editor .ProseMirror {
   padding: 10px;
+  border: #d4d4d4 solid 1px;
+  border-radius: 5px;
+  background: white;
 }
 
 .editor table {

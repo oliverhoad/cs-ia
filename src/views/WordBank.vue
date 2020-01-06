@@ -1,100 +1,82 @@
 <template>
-  <v-data-table
-    v-if="this.currentUserYear == 'Teacher'"
-    :calculate-widths="calcWidths"
-    :search="search"
-    :headers="headers"
-    :items="wordbank"
-    :sort-by="['word']"
-    :sort-desc="[false]"
-    class="mytable elevation-1"
-  >
-    <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Wordbank</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
-
-        <v-text-field
-          v-model="search"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
-        <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on }">
-            <v-btn
-              color="light-blue accent-4"
-              large
-              class="ml-6"
-              elevation="4"
-              dark
-              v-on="on"
-              >New Word</v-btn
-            >
-          </template>
-
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-text-field
-                    v-model="editedWord.word"
-                    label="Word"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="editedWord.definition"
-                    label="Definition"
-                  ></v-text-field>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <template
+  <v-container>
+    <v-data-table
       v-if="this.currentUserYear == 'Teacher'"
-      v-slot:item.action="{ item }"
+      :calculate-widths="calcWidths"
+      :search="search"
+      :headers="headers"
+      :items="wordbank"
+      :sort-by="['word']"
+      :sort-desc="[false]"
+      class="mytable elevation-1"
     >
-      <v-icon block @click="editWord(item)">mdi-pencil</v-icon>
-      <v-icon block @click="deleteWord(item)">mdi-delete</v-icon>
-    </template>
-  </v-data-table>
+      <template v-slot:top>
+        <v-toolbar flat color="white">
+          <v-toolbar-title>Wordbank</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
 
-  <v-data-table
-    v-else-if="this.currentUserYear != 'Teacher'"
-    :calculate-widths="calcWidths"
-    :search="search"
-    :headers="headers"
-    :items="wordbank"
-    :sort-by="['word']"
-    :sort-desc="[false]"
-    class="mytable elevation-1"
-  >
-    <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Wordbank</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
+          <v-text-field v-model="search" label="Search" single-line hide-details></v-text-field>
+          <v-dialog v-model="dialog" max-width="500px">
+            <template v-slot:activator="{ on }">
+              <v-btn
+                color="light-blue accent-4"
+                large
+                class="ml-6"
+                elevation="4"
+                dark
+                v-on="on"
+              >New Word</v-btn>
+            </template>
 
-        <v-text-field
-          v-model="search"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-toolbar>
-    </template>
-  </v-data-table>
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
+
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-text-field v-model="editedWord.word" label="Word"></v-text-field>
+                    <v-text-field v-model="editedWord.definition" label="Definition"></v-text-field>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+      </template>
+      <template v-if="this.currentUserYear == 'Teacher'" v-slot:item.action="{ item }">
+        <v-icon block @click="editWord(item)">mdi-pencil</v-icon>
+        <v-icon block @click="deleteWord(item)">mdi-delete</v-icon>
+      </template>
+    </v-data-table>
+
+    <v-data-table
+      v-else-if="this.currentUserYear != 'Teacher'"
+      :calculate-widths="calcWidths"
+      :search="search"
+      :headers="headers"
+      :items="wordbank"
+      :sort-by="['word']"
+      :sort-desc="[false]"
+      class="mytable elevation-1"
+    >
+      <template v-slot:top>
+        <v-toolbar flat color="white">
+          <v-toolbar-title>Wordbank</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+
+          <v-text-field v-model="search" label="Search" single-line hide-details></v-text-field>
+        </v-toolbar>
+      </template>
+    </v-data-table>
+  </v-container>
 </template>
 
 <script>
@@ -267,4 +249,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

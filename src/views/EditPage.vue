@@ -1,12 +1,12 @@
 <template>
   <div class="edit-page">
-    <Editor :editable="editable" :new="false" :slug="pageSlug"></Editor>
+    <Editor :editable="editable" :new="false" :slug="pageSlug"></Editor> <!-- Accepts parameters that change how it functions. -->
   </div>
 </template>
 
 <script>
 import { db } from "@/main.js";
-import Editor from "../components/Editor";
+import Editor from "../components/Editor"; // Importing the editor component
 import firebase from "firebase";
 export default {
   name: "edit-page",
@@ -18,7 +18,7 @@ export default {
       user: null,
       currentUserYear: null,
       editable: null,
-      pageSlug: this.$route.params.pageSlug
+      pageSlug: this.$route.params.pageSlug // getting from previous
 
       // pageData: {}
     };
@@ -35,9 +35,9 @@ export default {
             snapshot.forEach(doc => {
               this.currentUserYear = doc.data().year;
               // console.log(this.currentUserYear);
-              if (this.currentUserYear == "Teacher") {
+              if (this.currentUserYear == "Teacher") { // allows teacher to edit
                 this.editable = true;
-              } else if (this.currentUserYear != "Teacher") {
+              } else if (this.currentUserYear != "Teacher") { // doesn't allow students
                 this.editable = false;
               }
             });

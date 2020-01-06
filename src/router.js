@@ -4,35 +4,44 @@ import Signup from "./views/Signup.vue";
 import Login from "./views/Login.vue";
 import WordBank from "./views/WordBank.vue";
 import Home from "./views/Home.vue";
-import Games from "./views/Games.vue";
+// import Games from "./views/Games.vue";
 import NewCategory from "./views/NewCategory.vue";
 import NewPage from "./views/NewPage.vue";
-import NewUpload from "./views/NewUpload.vue";
+// import NewUpload from "./views/NewUpload.vue";
 import Categories from "./views/Categories.vue";
 import Pages from "./views/Pages.vue";
-import EditPage from "./views/EditPage.vue"
-import Test from "./views/TestTipTap.vue"
+import EditPage from "./views/EditPage.vue";
+import EditCategory from "./views/EditCategory.vue";
+// import Test from "./views/TestTipTap.vue"
 import firebase from 'firebase'
 
 Vue.use(Router);
 
 const router = new Router({
+  mode: 'history',
   routes: [{
       path: "/signup",
       name: "signup",
-      component: Signup
+      component: Signup,
+      meta: {
+        title: 'Signup'
+      }
     },
     {
       path: "/login",
       name: "login",
-      component: Login
+      component: Login,
+      meta: {
+        title: 'Login'
+      }
     },
     {
       path: "/wordbank",
       name: "word-bank",
       component: WordBank,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Wordbank'
       }
     },
     {
@@ -40,23 +49,25 @@ const router = new Router({
       name: "home",
       component: Home,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Home'
       }
     },
-    {
-      path: "/games",
-      name: "games",
-      component: Games,
-      meta: {
-        requiresAuth: true
-      }
-    },
+    // {
+    //   path: "/games",
+    //   name: "games",
+    //   component: Games,
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
     {
       path: "/new-category",
       name: "new-category",
       component: NewCategory,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'New Category'
       }
     },
     {
@@ -64,23 +75,25 @@ const router = new Router({
       name: "new-page",
       component: NewPage,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'New Page'
       }
     },
-    {
-      path: "/new-upload",
-      name: "new-upload",
-      component: NewUpload,
-      meta: {
-        requiresAuth: true
-      }
-    },
+    // {
+    //   path: "/new-upload",
+    //   name: "new-upload",
+    //   component: NewUpload,
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
     {
       path: "/categories",
       name: "categories",
       component: Categories,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Categories/Units'
       }
     },
     {
@@ -88,7 +101,8 @@ const router = new Router({
       name: "pages",
       component: Pages,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Pages'
       }
     },
     {
@@ -96,17 +110,27 @@ const router = new Router({
       name: "edit-page",
       component: EditPage,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Edit Page'
       }
     },
     {
-      path: "/test",
-      name: "test",
-      component: Test,
+      path: "/edit-category/:title",
+      name: "edit-category",
+      component: EditCategory,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Edit Category'
       }
     },
+    // {
+    //   path: "/test",
+    //   name: "test",
+    //   component: Test,
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
   ]
 });
 

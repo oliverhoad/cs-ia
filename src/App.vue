@@ -1,5 +1,7 @@
 <template>
-  <v-app>
+  <v-app
+    style="background: url('./assets/background.jpg'); background-repeat: no-repeat; background-size: cover;"
+  >
     <Nav></Nav>
     <v-content>
       <router-view></router-view>
@@ -10,6 +12,7 @@
 <script>
 // import { Editor } from "@/components/Editor";
 import Nav from "./components/Nav";
+import image from "./assets/background.jpg";
 
 export default {
   name: "App",
@@ -18,8 +21,19 @@ export default {
   },
   data: () => ({
     //
-  })
+  }),
+  watch: {
+    $route(to, from) {
+      document.title = to.meta.title || "Your Website";
+    }
+  }
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+body {
+  background: url("./assets/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>

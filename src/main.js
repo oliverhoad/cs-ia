@@ -1,3 +1,4 @@
+import '@mdi/font/css/materialdesignicons.css'
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -30,6 +31,9 @@ firebase.auth().onAuthStateChanged(() => {
     app = new Vue({
       router,
       vuetify,
+      icons:{
+        iconfont: 'mdi',
+      },
       render: h => h(App)
     }).$mount("#app");
   }
